@@ -21,7 +21,7 @@ This tutorial walks your through how to set up a new repository, make commits, a
 
 ### Assignment Requirements:
 
-This bank account should all a user to do  the following:
+This bank account should allow a user to do  the following:
 
 1. Your Python program should be created in one file called `BankAccount.py`.
 

@@ -21,7 +21,7 @@ class BankAccount:
       if (amount > self.balance):
          self.balance -= 10 
          print(f'You have insufficient funds to withdraw ${amount}. An overdraft fee of $10 was added to your account. Your new account balance is ${self.balance}')
-      # If balance is greater than amount withdrawn, show new balance
+      # ELSE IF balance is greater than amount withdrawn, show new balance
       else:
          self.balance -= amount
          print(f'Amount Withdrawn: ${amount} New account Balance is: ${self.balance}')
@@ -103,4 +103,11 @@ mitchell_account.add_interest()
 mitchell_account.print_receipt()
 mitchell_account.withdraw(150) 
 mitchell_account.print_receipt() 
+
+#Stretch Goal List Called "Bank" with all accounts to the bank and calls interest methods for each account.
+bank = [alex_account, moose_account, clooney_account, mitchell_account]
+
+for account in bank:
+   account.add_interest()
+
 

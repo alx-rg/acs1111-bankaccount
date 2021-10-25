@@ -1,45 +1,51 @@
+#Import random to randomize the account number
+from random import randint
 
-
+# Create a BankAccount class to store the data for each account
 class BankAccount:
-   def __init__(self, full_name, account_number, balance):
+   def __init__(self, full_name, account_type, account_number, balance):
       self.name = full_name
+      self.account_type = account_type
       self.account = account_number
       self.balance = balance
 
-   def describe_account(self):
-      print(f'Full Name: {self.name} Account Number: {self.account} Account Balance: ${self.balance}')
-
+   # Deposit a certain "amount" into account and return the updated account balance
    def deposit(self, amount):
-      # amount = float(input("How much money would you like to deposit? "))
       self.balance += amount
       print(f'Amount Deposited: ${amount} New account Balance is: ${self.balance}')
       return self.balance
 
+   # Withdraw a certain "amount" from the account and return the updated account balance
    def withdraw(self, amount):
-      # amount = float(input("How much money would you like to withdraw? "))
+      # IF the balance in the account is less than the amount to withdraw, debit 10$ from the account and return overdraft message.
       if (amount > self.balance):
          self.balance -= 10 
-         print(f'Insufficient funds. An overdraft fee of $10 was added to your account. Your new account balance is ${self.balance}')
+         print(f'You have insufficient funds to withdraw ${amount}. An overdraft fee of $10 was added to your account. Your new account balance is ${self.balance}')
+      # If balance is greater than amount withdrawn, show new balance
       else:
          self.balance -= amount
          print(f'Amount Withdrawn: ${amount} New account Balance is: ${self.balance}')
          return self.balance
 
-   def get_balance(self):
-      print(f'Hello {self.name}, your current account balance is ${self.balance}')
-      return self.balance
-
+   # When the interest function is called, calculate interest and add it to the account balance.
    def add_interest(self):
-      interest = self.balance * 0.00083
-      print(f'Interest has accrued on your account for the ammount of ${interest}')
+      #Check to see if the account type is Checking or Saving and calculate amount of interest earned accordingly.
+      if (self.account_type == 'Checking'):
+         interest = self.balance * 0.00083
+      else:
+         interest = self.balance * 0.001
+      #Print interest earned with two decimal spaces and then add the interest to the account balance.
+      print(f'Interest has accrued on your {self.account_type} account for the ammount of ${"{:.2f}".format(interest)}')
       self.balance += interest
       return self.balance
 
+   # Print all account information for user and hide the first 4 digits of account with a "*"
    def print_receipt(self):
       print('--------------------')
       print(f"{self.name}'s Statement")
-      print(f'Account No.: {self.account}')
-      print(f'Balance: ${self.balance}' + '\n' + '--------------------')
+      print(f'Account Type: {self.account_type}')
+      print(f'Account No.: ****{str(self.account)[slice(4,8)]}')
+      print(f'Balance: ${"{:.2f}".format(self.balance)}' + '\n' + '--------------------')
    
 
 class Bank:
@@ -58,41 +64,43 @@ class Bank:
 
 #bank = Bank ()
 
-alex_account = BankAccount('Alex R', '12345678', 2000.00)
-alex_account.describe_account()
 
-moose_account = BankAccount('Moose Doodle', '44448888', 500)
-moose_account.print_receipt()
+# Use Random to assign an 8 digit bank account number when function is called
+def random_bank_account():
+   random_number = randint(00000000,99999999)
+   account_number = str(random_number)
+   return account_number
+      
+
+
+# TEST functions below:
+
+#Check to see if deposit and Savings account interest works
+alex_account = BankAccount('Alex Supafly', 'Saving', random_bank_account(), 5000.00)
+alex_account.print_receipt()
+alex_account.deposit(5000)
+alex_account.print_receipt()
+alex_account.add_interest()
+alex_account.print_receipt()
+
+#Check to see if overdraft fee works
+moose_account = BankAccount('Moose Doodle', 'Saving', random_bank_account(), 500)
 moose_account.withdraw(550)
-moose_account.add_interest()
-moose_account.print_receipt()
+moose_account.print_receipt() 
 
-clooney_account = BankAccount('Jim Clooney', '32323232', 1000)
-clooney_account.deposit(234)
+#Check to see if Checking account interest works
+clooney_account = BankAccount('Jim Clooney', 'Checking', random_bank_account(), 10000)
+clooney_account.print_receipt()
+clooney_account.add_interest()
 clooney_account.print_receipt()
 
-mitchell_account = BankAccount('Mitchell SupaFly', '03141592', 2000.00)
+#Check to see if data given to us for assignment works
+mitchell_account = BankAccount('Mitchell', 'Checking', '03141592' , 2000.00)
+mitchell_account.print_receipt()
 mitchell_account.deposit(400000)
-mitchell_account.print_receipt
-mitchell_account.add_interest
-mitchell_account.print_receipt
-mitchell_account.withdraw(150)
-mitchell_account.print_receipt
-
-
-bank_atm = True
-while bank_atm: 
-    select_function = input("\n" + f"Please choose from the following Options:"+"\n"+"--------------------"+"\n"+"'1' or 'c' to create an account"+"\n"+"'2' or 'r' to get a receipt/statement"+"\n"+"'3' or 'd' to deposit money!"+"\n"+"'4' or 'w' to withdraw the money/molah"+"\n"+"'5' or 'q' to quit"+"\n"+"--------------------"+"\n")
-    if select_function == 'q' or 5:
-        print("Thank you for using the Python Bank")
-        bank_atm = False        
-    elif select_function == 'c' or 1:
-        bank.create_acct()
-    elif select_function == 's' or 2:
-        bank.receipt()
-    elif select_function == 'd' or 3:
-        bank.deposit()
-    elif select_function == 'w' or 4:
-        bank.withdraw()
-
+mitchell_account.print_receipt()
+mitchell_account.add_interest()
+mitchell_account.print_receipt()
+mitchell_account.withdraw(150) 
+mitchell_account.print_receipt() 
 
